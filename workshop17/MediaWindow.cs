@@ -15,7 +15,7 @@ namespace workshop17
 {
     public class MediaWindow
     {
-        public int Width = 0;       //width of the viewport in pixels
+        public int Width = 0;       //width of the viewport in
         public int Height = 0;      //height of the viewport in pixels
         public double MouseX = 0.0; //location of the mouse along X
         public double MouseY = 0.0; //location of the mouse along Y
