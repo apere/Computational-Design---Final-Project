@@ -21,9 +21,13 @@ namespace workshop17
         public double MouseY = 0.0; //location of the mouse along Y
 
 
-        public KinectHelper kinect = new KinectHelper(true, true, true);
 
-        //initialization function. Everything you write here is executed once in the begining of the program
+        public KinectHelper kinect = new KinectHelper(true, true, true);
+        public List<Person> persons = new List<Person>();
+        public List<Memory> memories = new List<Memory>();
+
+
+        //initialization function. Everything you write here is executed once in the beginning of the program
         public void Initialize()
         {
             kinect.Initialize();
@@ -46,8 +50,6 @@ namespace workshop17
         public void OnFrameUpdate()
         {
 
-
-
             GL.ClearColor(0.6f, 0.6f, 0.6f, 1.0f);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
@@ -63,73 +65,20 @@ namespace workshop17
             Matrix4d vmat = Matrix4d.LookAt(Eye, Target, Up);
             GL.LoadMatrix(ref vmat);
 
-
-            
-
-           
-
             if (kinect.HasDepthData)
             {
                 GL.Enable(EnableCap.DepthTest);
                 GL.PointSize(2.0f);
                 GL.Begin(PrimitiveType.Points);
-                for (int j = 0; j < kinect.DepthHeight; j+=5)
-                {
-                    for (int i = 0; i < kinect.DepthWidth; i+=5)
-                    {
-                       KinectPoint kp=  kinect.Points[i, j];
-            
-                        GL.Color4(kp.color);
-                        GL.Vertex3(kp.p);
-                        
-                    }
-                }
+                // do stuff w/ depth data
                 GL.End();
             }
 
 
             if (kinect.HasSkeletonData)
             {
-                
-
-
-                GL.Enable(EnableCap.DepthTest);
-                GL.Begin(PrimitiveType.TriangleFan);
-                foreach (Body b in kinect.Bodies)
-                {
-                    if (!b.IsTracked) continue;
-                    foreach (Joint j in b.Joints.Values)
-                    {
-                       
-                        float x = j.Position.X;
-                        float y = j.Position.Y;
-                        float z = j.Position.Z;
-
-                        GL.Color4(kinect.ColorAt(j.Position));
-                        GL.Vertex3(x, y, z);
-                    }
-                }
-                GL.End();
-
-
-
-                GL.Disable(EnableCap.DepthTest);
-                GL.Color4(1.0, 1.0, 1.0, 1.0);
-                GL.PointSize(10.0f);
-                GL.Begin(PrimitiveType.Points);
-                foreach (Body b in kinect.Bodies)
-                {
-                    if (!b.IsTracked) continue;
-                    foreach (Joint j in b.Joints.Values)
-                    {
-                        float x = j.Position.X;
-                        float y = j.Position.Y;
-                        float z = j.Position.Z;
-
-                        GL.Vertex3(x, y, z);
-                    }
-                }
-                GL.End();
+                // CODE GOES HERE
+              
             }
 
         }
@@ -137,27 +86,5 @@ namespace workshop17
         double mouseX0 = 0.0;
         double mouseY0 = 0.0;
 
-        
-        public void MouseMove(double x, double y, MouseButtons button)
-        {
-            mouseX0 = MouseX;
-            mouseY0 = MouseY;
-
-            MouseX = x;
-            MouseY = y;
-
-            double dx = MouseX - mouseX0;
-            double dy = MouseY - mouseY0;
-
-            if (button == MouseButtons.Left)
-            {
-                AngleXZ += dx*0.01;
-                AngleY += dy*0.01;
-            }   
-            else if (button== MouseButtons.Right)
-            {
-                Distance += dy * 0.01;
-            }
-        }
     }
 }
