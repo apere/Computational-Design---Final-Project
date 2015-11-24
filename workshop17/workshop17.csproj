@@ -66,6 +66,8 @@
     </Compile>
     <Compile Include="KinectHelper.cs" />
     <Compile Include="MediaWindow.cs" />
+    <Compile Include="Memory.cs" />
+    <Compile Include="Person.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Form1.resx">
