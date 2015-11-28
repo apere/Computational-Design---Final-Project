@@ -49,7 +49,6 @@ namespace workshop17
         //animation function. This contains code executed 20 times per second.
         public void OnFrameUpdate()
         {
-
             GL.ClearColor(0.6f, 0.6f, 0.6f, 1.0f);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
@@ -77,7 +76,6 @@ namespace workshop17
 
             if (kinect.HasSkeletonData)
             {
-
                 //GL.Enable(EnableCap.DepthTest);
                 bool identified = false;
                 foreach(Body skeleton in kinect.Bodies)  // do I have a person object for each skeleton
@@ -96,39 +94,35 @@ namespace workshop17
 
                     identified = false; // reset 'identified' for next skeleton
                 }
+            } // END if skeleton data
 
-                bool removed = true;
-                foreach(Person p in persons) // check to see if we are keeping track of people that are no longer in front of the installation and should be turned into memories
+            bool removed = true;
+            foreach (Person p in persons) // check to see if we are keeping track of people that are no longer in front of the installation and should be turned into memories
+            {
+                foreach (Body skeleton in kinect.Bodies)
                 {
-                    foreach(Body skeleton in kinect.Bodies)
+                    if (removed && p.compare(skeleton)) // assume removed until we've found the person's skeleton
                     {
-                        if(removed && p.compare(skeleton)) // assume removed until we've found the person's skeleton
-                        {
-                            removed = false;
-                        }
-                    }
-
-                    if(removed) // if the person is no longer physically in front of the installation
-                    {
-                        memories.Add(p.getMemory()); // add person's memory to our list of memories
-                        persons.Remove(p); // remove person from our list of currently tracked persons
-                    }
-                    else // if the person is still physically in front of installation and being tracked
-                    {
-                        p.takeSnapshot(); // add to that person's memory
+                        removed = false;
                     }
                 }
 
-                foreach(Memory mem in memories) // display each memory
+                if (removed) // if the person is no longer physically in front of the installation
                 {
-                    mem.render(); // call the render method for each memory so they can draw themselves to the screen
+                    memories.Add(p.getMemory()); // add person's memory to our list of memories
+                    persons.Remove(p); // remove person from our list of currently tracked persons
                 }
-                
+                else // if the person is still physically in front of installation and being tracked
+                {
+                    p.takeSnapshot(); // add to that person's memory
+                }
             }
 
-        }
-        
+            foreach (Memory mem in memories) // display each memory
+            {
+                mem.render(); // call the render method for each memory so they can draw themselves to the screen
+            }
 
-
+        } // END onFrameUpdate()
     }
 }
