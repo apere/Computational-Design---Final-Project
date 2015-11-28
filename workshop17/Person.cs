@@ -10,7 +10,7 @@ namespace workshop17
         protected Body myBody; // reference to the body object that created this person
 
         // constructor
-        public Person()
+        public Person(Body skeleton)
         {
             // initialize instance variables & other setup
         }
