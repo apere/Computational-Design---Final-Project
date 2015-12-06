@@ -13,3 +13,6 @@ C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---
 C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\obj\Debug\workshop17.csproj.GenerateResource.Cache
 C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\obj\Debug\workshop17.exe
 C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\obj\Debug\workshop17.pdb
+D:\eArch\eStudies\2015-16 GSD MDes Technology\01_TERM\6338_COMPUTATIONAL DESIGN\02_ASSIGNMENTS\151027_Final Project\03_CODE\Computational-Design---Final-Project\workshop17\bin\Debug\workshop17.exe.config
+D:\eArch\eStudies\2015-16 GSD MDes Technology\01_TERM\6338_COMPUTATIONAL DESIGN\02_ASSIGNMENTS\151027_Final Project\03_CODE\Computational-Design---Final-Project\workshop17\obj\Debug\workshop17.exe
+D:\eArch\eStudies\2015-16 GSD MDes Technology\01_TERM\6338_COMPUTATIONAL DESIGN\02_ASSIGNMENTS\151027_Final Project\03_CODE\Computational-Design---Final-Project\workshop17\obj\Debug\workshop17.pdb
