@@ -5,12 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
+using OpenTK;
+using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics;
+
 namespace workshop17
 {
     public class Memory
     {
         DateTime timeCreated;
-        Vector4 Location;
+        Vector3d Location;
         int id;
         //List<images> frames; // each index represents a collection of snapshots or photos taken of the person
         List<int> frames;
@@ -51,24 +56,39 @@ namespace workshop17
         // Return
         //  the person in persons that is physically closest to this memory
         public Person getClosestPerson(List<Person> persons)
-        {
+        {  
+            Person closestPerson=persons[0];
+            Vector3d position = closestPerson.getPosition();
+            float dist = (float)Math.Sqrt(Math.Pow(position.X + Location.X, 2) + Math.Pow(position.Y + Location.Y, 2) + Math.Pow(position.Z + Location.Z, 2)); ;
+            float closestDist = dist;
+
+            foreach (Person p in persons)
+            {
+                position = p.getPosition();
+                dist = (float)Math.Sqrt(Math.Pow(position.X + Location.X,2) + Math.Pow(position.Y + Location.Y,2) + Math.Pow(position.Z + Location.Z,2));
+                if (dist < closestDist)
+                {
+                    closestDist = dist;
+                    closestPerson = p;
+                }
+            }
             // must return a person
-            return new Person();
+            return closestPerson;
         }
 
         // Function getOrientation
         //
         // Return
         //  A Vector pointing in the direction that we want to face
-        public Vector4 getOrientation()
+        public Vector3d getOrientation(List<Person> persons)
         {
-            return new Vector4();
+            return this.getClosestPerson(persons).getPosition().Normalized();
         }
 
         // Function render
         // This function should be called every time we want to display and update the memory. 
         // This should calculate the correct orientation and display the current frame.
-        public void render()
+        public void render(List<Person> persons)
         {
 
         }
