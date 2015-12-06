@@ -22,7 +22,7 @@ namespace workshop17
         }
 
         // Function add
-        //  This function is called to add a ‘snapshot’ to our array of frames. This should only be called from a person object.
+        //  This function is called to add a ‘snap shot’ to our array of frames. This should only be called from a person object.
         // Parameters
         //  image - an image that we want to add to this memory
         public void add() // parameters?
@@ -41,7 +41,7 @@ namespace workshop17
         public Person getClosestPerson(List<Person> persons)
         {
             // must return a person
-            return new Person();
+            return persons[0];
         }
 
         // Function getOrientation

@@ -124,5 +124,28 @@ namespace workshop17
             }
 
         } // END onFrameUpdate()
+        double mouseX0 = 0.0;
+        double mouseY0 = 0.0;
+        public void MouseMove(double x, double y, MouseButtons button)
+        {
+            mouseX0 = MouseX;
+            mouseY0 = MouseY;
+
+            MouseX = x;
+            MouseY = y;
+
+            double dx = MouseX - mouseX0;
+            double dy = MouseY - mouseY0;
+
+            if (button == MouseButtons.Left)
+            {
+                AngleXZ += dx * 0.01;
+                AngleY += dy * 0.01;
+            }
+            else if (button == MouseButtons.Right)
+            {
+                Distance += dy * 0.01;
+            }
+        }
     }
 }
