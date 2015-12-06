@@ -58,7 +58,8 @@ namespace workshop17
             TrackSkeleton = trackSkeleton;
             TrackDepth = trackDepth;
             TrackColor = trackColor;
-           // TransformPoints = transformPoints;
+            // TransformPoints = transformPoints;
+           
         }
 
         public bool IsSensorOpen
@@ -114,9 +115,9 @@ namespace workshop17
         public void Initialize()
         {
             KSensor = KinectSensor.GetDefault();
+            
 
             FrameSourceTypes ftypes = FrameSourceTypes.None;
-
             if (TrackSkeleton) ftypes |= FrameSourceTypes.Body;
             if (TrackDepth) ftypes |= FrameSourceTypes.Depth;
             if (TrackColor) ftypes |= FrameSourceTypes.Color;
@@ -125,7 +126,6 @@ namespace workshop17
 
             multireader = KSensor.OpenMultiSourceFrameReader(ftypes);
             multireader.MultiSourceFrameArrived += multireader_MultiSourceFrameArrived;
-
             KSensor.Open();
         }
 

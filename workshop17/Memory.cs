@@ -16,23 +16,26 @@ namespace workshop17
     {
         DateTime timeCreated;
         Vector3d Location;
-        int id;
+        ulong id;
         //List<images> frames; // each index represents a collection of snapshots or photos taken of the person
         int currentFrame; // the index of the snapshot that should be displayed next time render is called
+        List<List<KinectPoint>> snapshots;
        
         // Constructor
-        public Memory() // parameters?
+        public Memory(ulong id) // parameters?
         {
-           // initialize instance variables & other setup
+            // initialize instance variables & other setup
+            snapshots = new List<List<KinectPoint>>();
+            currentFrame = 0;
         }
 
         // Function add
         //  This function is called to add a ‘snap shot’ to our array of frames. This should only be called from a person object.
         // Parameters
         //  image - an image that we want to add to this memory
-        public void add() // parameters?
+        public void add(List<KinectPoint> snapshotPoints) // parameters?
         {
-
+            snapshots.Add(snapshotPoints);
         }
 
 
@@ -78,7 +81,19 @@ namespace workshop17
         // This should calculate the correct orientation and display the current frame.
         public void render(List<Person> persons)
         {
+            List < KinectPoint > currShot = snapshots[currentFrame];
+            Console.WriteLine(currShot.Count);
+            GL.Enable(EnableCap.DepthTest);
+            GL.PointSize(1.0f);
+            GL.Begin(PrimitiveType.Points);
+            foreach(KinectPoint kp in currShot)
+            {
+                    GL.Color4(kp.color);
+                    GL.Vertex3(kp.p);
+            }
+            GL.End();
 
+            currentFrame++;
         }
 
     }

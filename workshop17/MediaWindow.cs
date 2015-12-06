@@ -64,17 +64,8 @@ namespace workshop17
             Matrix4d vmat = Matrix4d.LookAt(Eye, Target, Up);
             GL.LoadMatrix(ref vmat);
 
-            if (kinect.HasDepthData)
-            {
-                GL.Enable(EnableCap.DepthTest);
-                GL.PointSize(2.0f);
-                GL.Begin(PrimitiveType.Points);
-                // do stuff w/ depth data
-                GL.End();
-            }
-
-
-            if (kinect.HasSkeletonData)
+          
+            if (kinect.HasSkeletonData && kinect.HasDepthData)
             {
                 //GL.Enable(EnableCap.DepthTest);
                 bool identified = false;
@@ -89,7 +80,7 @@ namespace workshop17
                     }
                     if (!identified) // if we haven't identified the person, add them to our persons list.
                     {
-                        persons.Add(new Person(skeleton));
+                        persons.Add(new Person(skeleton, kinect));
                     }
 
                     identified = false; // reset 'identified' for next skeleton
@@ -111,16 +102,18 @@ namespace workshop17
                 {
                     memories.Add(p.getMemory()); // add person's memory to our list of memories
                     persons.Remove(p); // remove person from our list of currently tracked persons
+                    Console.Write("person removed");
                 }
                 else // if the person is still physically in front of installation and being tracked
                 {
                     p.takeSnapshot(); // add to that person's memory
+                    p.getMemory().render(persons);
                 }
             }
 
             foreach (Memory mem in memories) // display each memory
             {
-                mem.render(); // call the render method for each memory so they can draw themselves to the screen
+                mem.render(persons); // call the render method for each memory so they can draw themselves to the screen
             }
 
         } // END onFrameUpdate()

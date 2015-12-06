@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Kinect;
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Graphics;
+
+
 
 
 namespace workshop17
@@ -12,11 +15,17 @@ namespace workshop17
         protected Memory myMemory;
         protected ulong id;
         protected Body myBody; // reference to the body object that created this person
+        KinectHelper kinect;
 
         // constructor
-        public Person(Body skeleton)
+        public Person(Body skeleton, KinectHelper k)
         {
             // initialize instance variables & other setup
+            myBody = skeleton;
+            kinect = k;
+            id = myBody.TrackingId;
+            myMemory = new Memory(id);
+            Console.WriteLine("new person " + id);
         }
 
         // Function takeSnapshot
@@ -25,7 +34,32 @@ namespace workshop17
         //      and adds that snapshot to the person’s memory.
         public void takeSnapshot()
         {
+            List<KinectPoint> points = new List<KinectPoint>();
+            if (myBody.Joints != null && myBody.Joints.Count > 0)
+            {
+                CameraSpacePoint joint = myBody.Joints[0].Position;
+                Vector3d jo = new Vector3d(-joint.X, -joint.Y, -joint.Z);
 
+                // checks to see if the point is within range of joint
+
+                for (int j = 0; j < kinect.DepthHeight; j += 1)
+                {
+                    for (int i = 0; i < kinect.DepthWidth; i += 1)
+                    {
+                        KinectPoint kp = kinect.Points[i, j];
+                        double dist = Math.Abs(Vector3d.Subtract(kp.p, jo).Length);
+                        if (dist < 3)
+                        {
+                            points.Add(kp);
+                        }
+                    }
+                }
+                myMemory.add(points);
+            } else
+            {
+
+                Console.Write("no joints");
+            }
         }
 
         // Function getMemory
