@@ -65,6 +65,19 @@ namespace workshop17
             Matrix4d vmat = Matrix4d.LookAt(Eye, Target, Up);
             GL.LoadMatrix(ref vmat);
 
+            //................................................................................Set Up Lighting
+
+            GL.Enable(EnableCap.Lighting);      //enable lighting calculations
+            GL.Enable(EnableCap.Light0);        //enable the first light
+            GL.Light(LightName.Light0, LightParameter.Position, new OpenTK.Vector4(30.0f, 30.0f, 30.0f, 1.0f)); //set light position and color
+            GL.Light(LightName.Light0, LightParameter.Diffuse, new OpenTK.Vector4(1.0f, 1.0f, 1.0f, 1.0f));
+
+            GL.ColorMaterial(MaterialFace.FrontAndBack, ColorMaterialParameter.Diffuse); //enable material
+            GL.Enable(EnableCap.ColorMaterial);
+
+            GL.LightModel(LightModelParameter.LightModelTwoSide, 1); //set lighting model 
+            GL.LightModel(LightModelParameter.LightModelLocalViewer, 1);
+
             if (kinect.HasDepthData)
             {
                 GL.Enable(EnableCap.DepthTest);
@@ -85,6 +98,9 @@ namespace workshop17
         
         double mouseX0 = 0.0;
         double mouseY0 = 0.0;
+        public void MouseMove(double x, double y, MouseButtons button)
+        {
 
+        }
     }
 }
