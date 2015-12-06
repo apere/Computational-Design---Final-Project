@@ -1,12 +1,16 @@
 ﻿using System;
 using Microsoft.Kinect;
+using OpenTK;
+using OpenTK.Graphics.OpenGL;
+using OpenTK.Graphics;
+
 
 namespace workshop17
 {
     public class Person
     {
         protected Memory myMemory;
-        protected int id;
+        protected ulong id;
         protected Body myBody; // reference to the body object that created this person
 
         // constructor
@@ -43,9 +47,18 @@ namespace workshop17
         //
         // Return
         //  whether or not the skeleton belongs to this person
-        public bool compare(Body Skelton)
+        public bool compare(Body Skeleton)
         {
-            return true;
+            if (Skeleton != null)
+            {
+                return this.id == Skeleton.TrackingId;
+            }
+            return false;
+
+        }
+        public Vector3d getPosition() {
+            Vector3d ps=new Vector3d(myBody.Joints[0].Position.X, myBody.Joints[0].Position.Y, myBody.Joints[0].Position.Z);
+            return ps;
         }
     }
 }
