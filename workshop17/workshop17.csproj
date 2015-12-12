@@ -45,6 +45,9 @@
       <HintPath>..\packages\OpenTK.GLControl.1.1.1589.5942\lib\NET40\OpenTK.GLControl.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Rhino3dmIO">
+      <HintPath>..\packages\Rhino3dmIO.dll-x64-Windows.5.1.30000.25\lib\net40\Rhino3dmIO.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
