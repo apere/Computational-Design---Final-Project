@@ -35,10 +35,16 @@ namespace workshop17
         public void takeSnapshot()
         {
             List<KinectPoint> points = new List<KinectPoint>();
+            double dist;
+            KinectPoint kp;
+            CameraSpacePoint joint;
+            Vector3d jo;
+            int numJoints = myBody.Joints.Count;
+            bool add;
+            IEnumerable<JointType> keys = myBody.Joints.Keys;
+
             if (myBody.Joints != null && myBody.Joints.Count > 0)
             {
-                CameraSpacePoint joint = myBody.Joints[0].Position;
-                Vector3d jo = new Vector3d(-joint.X, -joint.Y, -joint.Z);
 
                 // checks to see if the point is within range of joint
 
@@ -46,17 +52,32 @@ namespace workshop17
                 {
                     for (int i = 0; i < kinect.DepthWidth; i += 1)
                     {
-                        KinectPoint kp = kinect.Points[i, j];
-                        double dist = Math.Abs(Vector3d.Subtract(kp.p, jo).Length);
-                        if (dist < 3)
+                        kp = kinect.Points[i, j];
+                        add = false;
+                        foreach(JointType key in keys)
+                        {
+                            if (!add)
+                            {
+                                joint = myBody.Joints[key].Position;
+                                jo = new Vector3d(joint.X, joint.Y, joint.Z);
+                                dist = Math.Abs(Vector3d.Subtract(kp.p, jo).Length);
+                                if (dist <= .25)
+                                { 
+                                    add = true;
+                                }
+                            }
+                        }
+                        
+                        if (add)
                         {
                             points.Add(kp);
                         }
                     }
                 }
                     myMemory.add(points);
+  
                 
-                Console.Write("ID " + id + " new frame: " + myMemory.Count());
+                Console.WriteLine("ID " + id + " new frame: " + myMemory.Count() + " " + " points");
             } else
             {
 
