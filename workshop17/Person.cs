@@ -54,7 +54,9 @@ namespace workshop17
                         }
                     }
                 }
-                myMemory.add(points);
+                    myMemory.add(points);
+                
+                Console.Write("ID " + id + " new frame: " + myMemory.Count());
             } else
             {
 
@@ -69,6 +71,11 @@ namespace workshop17
         public Memory getMemory()
         {
             return myMemory;
+        }
+
+        public ulong getID()
+        {
+            return id;
         }
 
 

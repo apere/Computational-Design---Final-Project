@@ -49,7 +49,7 @@ namespace workshop17
         //animation function. This contains code executed 20 times per second.
         public void OnFrameUpdate()
         {
-            GL.ClearColor(0.6f, 0.6f, 0.6f, 1.0f);
+            GL.ClearColor(1f, 1f, 1f, 1.0f);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             GL.MatrixMode(MatrixMode.Projection);
@@ -78,7 +78,7 @@ namespace workshop17
                             identified = true; 
                         }
                     }
-                    if (!identified) // if we haven't identified the person, add them to our persons list.
+                    if (!identified && skeleton.TrackingId != 0) // if we haven't identified the person, add them to our persons list.
                     {
                         persons.Add(new Person(skeleton, kinect));
                     }
@@ -88,6 +88,7 @@ namespace workshop17
             } // END if skeleton data
 
             bool removed = true;
+            List<Person> toRemove = new List<Person>();
             foreach (Person p in persons) // check to see if we are keeping track of people that are no longer in front of the installation and should be turned into memories
             {
                 foreach (Body skeleton in kinect.Bodies)
@@ -101,20 +102,32 @@ namespace workshop17
                 if (removed) // if the person is no longer physically in front of the installation
                 {
                     memories.Add(p.getMemory()); // add person's memory to our list of memories
-                    persons.Remove(p); // remove person from our list of currently tracked persons
-                    Console.Write("person removed");
+                    toRemove.Add(p); // remove person from our list of currently tracked persons
+                  //  Console.Write("person removed");
                 }
                 else // if the person is still physically in front of installation and being tracked
                 {
                     p.takeSnapshot(); // add to that person's memory
-                    p.getMemory().render(persons);
+                   // p.getMemory().render(persons);
                 }
             }
+
+            foreach(Person p in toRemove)
+            {
+                persons.Remove(p);
+                Console.WriteLine("removed " + p.getID());
+            }
+            toRemove.Clear();
 
             foreach (Memory mem in memories) // display each memory
             {
                 mem.render(persons); // call the render method for each memory so they can draw themselves to the screen
             }
+
+            Console.WriteLine(" ");
+            Console.WriteLine(persons.Count + " persons");
+            Console.WriteLine(memories.Count + " memories");
+            Console.WriteLine("----");
 
         } // END onFrameUpdate()
         double mouseX0 = 0.0;

@@ -22,11 +22,12 @@ namespace workshop17
         List<List<KinectPoint>> snapshots;
        
         // Constructor
-        public Memory(ulong id) // parameters?
+        public Memory(ulong i) // parameters?
         {
             // initialize instance variables & other setup
             snapshots = new List<List<KinectPoint>>();
             currentFrame = 0;
+            id = i;
         }
 
         // Function add
@@ -67,6 +68,11 @@ namespace workshop17
             return closestPerson;
         }
 
+        public int Count()
+        {
+            return snapshots.Count;
+        }
+
         // Function getOrientation
         //
         // Return
@@ -93,7 +99,14 @@ namespace workshop17
             }
             GL.End();
 
+            Console.WriteLine("mem" + id + " frame:" + currentFrame);
+
             currentFrame++;
+            Console.Write(snapshots.Count + " snapshots");
+            if(currentFrame >= snapshots.Count)
+            {
+                currentFrame = 0;
+            }
         }
 
     }
