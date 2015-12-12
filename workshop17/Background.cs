@@ -35,6 +35,15 @@ namespace workshop17
             time += 0.1; //time step
             //double viewAngle = time * 0.3;
 
+
+            //.................................................................................Render Meshes
+            GL.Enable(EnableCap.DepthTest); //enable depth buffer testing, so that objects closer to the viewer wil locclude objects that are behind them
+            GL.Color4(1.0, 1.0, 1.0, 1.0);
+
+            foreach (var m in meshes)
+            {
+                m.Render();
+            }
             //................................................................................Drawing
 
             double a = 10.0;
@@ -57,33 +66,49 @@ namespace workshop17
                  }
              }*/
 
-
+            //..............................................Points
             List<OpenTK.Vector3d> pointsT = new List<OpenTK.Vector3d>();
+            double heightT = 0.5;
+            double lengthT = 100;
+            float pointdensity = 0.03f;
 
             GL.Begin(PrimitiveType.Points);
             GL.Enable(EnableCap.DepthTest);
-            for (float v = 0; v <= 5 * Math.PI; v=v+0.05f)
+            for (float v = 0; v <= lengthT * Math.PI; v=v+ pointdensity)
             {
-                for (float u = 0; u <= Math.PI; u=u + 0.05f)
+                for (float u = 0; u <= Math.PI; u=u + pointdensity)
                 {
                     x = u + v;
-                    y = (u + Math.Sin(u + v) / 4) * Math.Cos(u);
+                    y = (u*heightT + Math.Sin(u + v) / 8) * Math.Cos(u);
                     z= (u+Math.Sin(4*v)/8) *Math.Sin(u);
                     GL.Color3(0.0f, 0.0f, 0.0f);
                     GL.Vertex3(x, z, y);
-                    OpenTK.Vector3d p = new OpenTK.Vector3d(x, z, y);
+                    OpenTK.Vector3d p = new OpenTK.Vector3d(x, y, z);
                     pointsT.Add(p);
                 }
             }
             GL.End();
 
+            //...............................................Lines
+            /*GL.Begin(PrimitiveType.Points);
+            GL.Enable(EnableCap.DepthTest);
+           for(int i=0; i < pointsT.Count; i++)
+            {
+                GL.Vertex3(pointsT[i].X, pointsT[i].Y, pointsT[i].Z);
+            }
+
+            GL.End();*/
+
+
+            //...............................................Mesh
+            
+            /*
             int ny = 60;//(float)(Math.PI)*(5);
             int nx = 30; //(float)Math.PI;
+
             Mesh gmesh;
             gmesh = new Mesh();
-
-
-
+            
             for (int i = 0; i < pointsT.Count; ++i)
                 {
                     gmesh.Vertices.Add(pointsT[i].X, pointsT[i].Y, pointsT[i].Z);
@@ -101,39 +126,11 @@ namespace workshop17
 
                 RgridMesh = new RhinoMeshGL(gmesh);
                 meshes.Add(RgridMesh);
-
-                /*GL.Begin(PrimitiveType.Lines);
-                GL.Enable(EnableCap.DepthTest);
-                for (int u = 0; u <= Math.PI; u++)
-                {
-                    for (int v = 0; v <= 5 * Math.PI; v++)
-                    {
-                        x = u + v;
-                        y = (u + Math.Sin(u + v) / 4) * Math.Cos(u);
-                        z = (u + Math.Sin(4 * v) / 8) * Math.Sin(u);
-                        GL.Color3(0.0f, 0.0f, 0.0f);
-                        GL.Vertex3(x, y, z * factor);
-                    }
-
-                }
-                GL.End();
                 */
-                /*GL.Begin(PrimitiveType.Lines);
-                GL.Enable(EnableCap.DepthTest);
-                GL.LineWidth(15.0f);
-                for (int i = 0; i < 1000; i++)
-                {
-                    for (int j = 0; j < 500; j++)
-                    {
-                        x = i;
-                        y = (a * (x * x) - (b * x) - Math.Sin(c));
-                        GL.Color3(0.0f, 0.0f, 0.0f);
-                        GL.Vertex3(x , y, c * i);
-                    }
-                }
+                
+            //...............................................Lines
 
-                GL.End();*/
-                Console.WriteLine(a+" "+b + " "+c + " ");
+            Console.WriteLine(a+" "+b + " "+c + " ");
 
 
 
