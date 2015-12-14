@@ -11,8 +11,6 @@ using Microsoft.Kinect;
 
 using System.Windows.Forms;
 
-using Rhino.Geometry;
-
 namespace workshop17
 {
     public class MediaWindow
@@ -44,9 +42,9 @@ namespace workshop17
         public double AngleY = 0.0;
         public double Distance = 4.0;
 
-        public OpenTK.Vector3d Eye;
-        public OpenTK.Vector3d Target =new OpenTK.Vector3d(0.0, 0.0, 2.0);
-        public OpenTK.Vector3d Up = new OpenTK.Vector3d(0.0, 1.0, 0.0);
+        public Vector3d Eye;
+        public Vector3d Target=new Vector3d(0.0, 0.0, 2.0);
+        public Vector3d Up = new Vector3d(0.0, 1.0, 0.0);
         
         //animation function. This contains code executed 20 times per second.
         public void OnFrameUpdate()
