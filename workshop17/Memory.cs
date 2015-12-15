@@ -90,7 +90,7 @@ namespace workshop17
         {
             List < KinectPoint > currShot = snapshots[currentFrame];
             double zIndex = currShot[0].p.Z;
-            Console.WriteLine(currShot.Count);
+            int offset = (DateTime.Now - timeCreated).Seconds / 30; // time offset for z-axis
 
             GL.PointSize(3);  // Changing point size gives some cool abstract results
             GL.Enable(EnableCap.DepthTest);
@@ -104,11 +104,11 @@ namespace workshop17
             foreach (KinectPoint kp in currShot)
             {
                     GL.Color4(kp.color);
-                    GL.Vertex3(kp.p.X, kp.p.Y, kp.p.Z);
+                    GL.Vertex3(kp.p.X, kp.p.Y, kp.p.Z + offset);
                 
             }
             GL.End();
-
+           
             Console.WriteLine("mem" + id + " frame:" + currentFrame);
         
             currentFrame = currentFrame + 1;
