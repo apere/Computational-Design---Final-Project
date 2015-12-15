@@ -9,16 +9,16 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Graphics;
 
-/// <summary>
-/// Memory Class
-/// Authors: Adam M Pere, Keebaik Sim, Enol Vallina
-/// Introduction to Computational Design - Fall 2015, Harvard Graduate School of Design
-/// 
-/// The memory class represents a recording of people that were once standing in front of the kinect sensor but are no longer.
-/// The 'memory' of a person object.
-/// </summary>
 namespace workshop17
 {
+    /// <summary>
+    /// Memory Class
+    /// Authors: Adam M Pere, Keebaik Sim, Enol Vallina
+    /// Introduction to Computational Design - Fall 2015, Harvard Graduate School of Design
+    /// 
+    /// The memory class represents a recording of people that were once standing in front of the kinect sensor but are no longer.
+    /// The 'memory' of a person object.
+    /// </summary>
     public class Memory
     {
         DateTime timeCreated;
@@ -176,10 +176,10 @@ namespace workshop17
             }
             GL.End();
            
-            //Console.WriteLine("mem" + id + " frame:" + currentFrame); // memory rendering debugging
+            //Console.WriteLine("mem " + id + " frame:" + currentFrame); // debugging
         
             currentFrame = currentFrame + 1;
-            if(currentFrame >= snapshots.Count) // start over ?
+            if(currentFrame >= snapshots.Count) // start over?
             {
                 currentFrame = 0;
             } 

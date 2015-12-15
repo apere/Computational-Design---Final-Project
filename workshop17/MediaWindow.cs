@@ -11,16 +11,15 @@ using Microsoft.Kinect;
 
 using System.Windows.Forms;
 
-/// <summary>
-/// Media Window
-/// Authors: Adam M Pere, Keebaik Sim, Enol Vallina
-/// Introduction to Computational Design - Fall 2015, Harvard Graduate School of Design
-/// 
-/// The MediaWindow class is where the OpenGL scene is set up and where the main communication with the Kinect Sensor happens.
-/// </summary>
-
 namespace workshop17
 {
+    /// <summary>
+    /// Media Window
+    /// Authors: Adam M Pere, Keebaik Sim, Enol Vallina
+    /// Introduction to Computational Design - Fall 2015, Harvard Graduate School of Design
+    /// 
+    /// The MediaWindow class is where the OpenGL scene is set up and where the main communication with the Kinect Sensor happens.
+    /// </summary>
     public class MediaWindow
     {
         public int Width = 0;       //width of the viewport in pixels

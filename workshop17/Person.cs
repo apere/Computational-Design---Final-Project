@@ -5,15 +5,15 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Graphics;
 
-/// <summary>
-/// Person Class
-/// Authors: Adam M Pere, Keebaik Sim, Enol Vallina
-/// Introduction to Computational Design - Fall 2015, Harvard Graduate School of Design
-/// 
-/// The person class represents a person that is physically standing in front of a kinect sensor
-/// </summary>
 namespace workshop17
 {
+    /// <summary>
+    /// Person Class
+    /// Authors: Adam M Pere, Keebaik Sim, Enol Vallina
+    /// Introduction to Computational Design - Fall 2015, Harvard Graduate School of Design
+    /// 
+    /// The person class represents a person that is physically standing in front of a kinect sensor
+    /// </summary>
     public class Person
     {
         protected Memory myMemory;
