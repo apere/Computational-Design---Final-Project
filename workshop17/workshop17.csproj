@@ -7,8 +7,8 @@
     <ProjectGuid>{D612390C-D3F4-4138-856D-8821D87F96CE}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>finalProject</RootNamespace>
-    <AssemblyName>finalProject</AssemblyName>
+    <RootNamespace>workshop17</RootNamespace>
+    <AssemblyName>workshop17</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>

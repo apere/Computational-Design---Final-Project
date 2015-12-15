@@ -1,18 +1,17 @@
 D:\eArch\eStudies\2015-16 GSD MDes Technology\01_TERM\6338_COMPUTATIONAL DESIGN\02_ASSIGNMENTS\151027_Final Project\03_CODE\Computational-Design---Final-Project\workshop17\bin\Debug\workshop17.exe.config
 D:\eArch\eStudies\2015-16 GSD MDes Technology\01_TERM\6338_COMPUTATIONAL DESIGN\02_ASSIGNMENTS\151027_Final Project\03_CODE\Computational-Design---Final-Project\workshop17\obj\Debug\workshop17.exe
 D:\eArch\eStudies\2015-16 GSD MDes Technology\01_TERM\6338_COMPUTATIONAL DESIGN\02_ASSIGNMENTS\151027_Final Project\03_CODE\Computational-Design---Final-Project\workshop17\obj\Debug\workshop17.pdb
-C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\bin\Debug\finalProject.exe.config
-C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\bin\Debug\finalProject.exe
-C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\bin\Debug\finalProject.pdb
-C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\bin\Debug\Microsoft.Kinect.dll
 C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\bin\Debug\OpenTK.dll
+C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\bin\Debug\workshop17.exe.config
+C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\bin\Debug\workshop17.exe
+C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\bin\Debug\workshop17.pdb
+C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\bin\Debug\Microsoft.Kinect.dll
 C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\bin\Debug\OpenTK.GLControl.dll
 C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\bin\Debug\Microsoft.Kinect.xml
 C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\bin\Debug\OpenTK.xml
 C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\bin\Debug\OpenTK.GLControl.xml
-C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\obj\Debug\workshop17.csprojResolveAssemblyReference.cache
 C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\obj\Debug\workshop17.Form1.resources
-C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\obj\Debug\finalProject.Properties.Resources.resources
+C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\obj\Debug\workshop17.Properties.Resources.resources
 C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\obj\Debug\workshop17.csproj.GenerateResource.Cache
-C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\obj\Debug\finalProject.exe
-C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\obj\Debug\finalProject.pdb
+C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\obj\Debug\workshop17.exe
+C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\obj\Debug\workshop17.pdb

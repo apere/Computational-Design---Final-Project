@@ -10,8 +10,6 @@ using OpenTK.Graphics;
 using Microsoft.Kinect;
 
 using System.Windows.Forms;
-using System.ComponentModel;
-using System.Threading;
 
 namespace workshop17
 {
@@ -21,8 +19,6 @@ namespace workshop17
         public int Height = 0;      //height of the viewport in pixels
         public double MouseX = 0.0; //location of the mouse along X
         public double MouseY = 0.0; //location of the mouse along Y
-
-        BackgroundWorker bw = new BackgroundWorker();
 
 
         public KinectHelper kinect = new KinectHelper(true, true, true);
@@ -50,7 +46,10 @@ namespace workshop17
         public Vector3d Eye;
         public Vector3d Target=new Vector3d(0.0, 0.0, 2.0);
         public Vector3d Up = new Vector3d(0.0, 1.0, 0.0);
-        
+
+        public List<List<Vector3d>> allJoints = new List<List<Vector3d>>();
+        public List<List<KinectPoint>> allPoints = new List<List<KinectPoint>>();
+
         //animation function. This contains code executed 20 times per second.
         public void OnFrameUpdate()
         {
@@ -83,61 +82,17 @@ namespace workshop17
             GL.LightModel(LightModelParameter.LightModelTwoSide, 1); //set lighting model 
             GL.LightModel(LightModelParameter.LightModelLocalViewer, 1);
 
-
+            // Any new people standing in front of the kinect?
             if (kinect.HasSkeletonData && kinect.HasDepthData)
             {
-                //GL.Enable(EnableCap.DepthTest);
-                bool identified = false;
-                foreach(Body skeleton in kinect.Bodies)  // do I have a person object for each skeleton
-                {
-                    foreach (Person p in persons)
-                    {
-                        if(!identified && p.compare(skeleton)) // ignore previously identified person
-                        {
-                            identified = true; 
-                        }
-                    }
-                    if (!identified && skeleton.TrackingId != 0) // if we haven't identified the person, add them to our persons list.
-                    {
-                        persons.Add(new Person(skeleton, kinect));
-                    }
-
-                    identified = false; // reset 'identified' for next skeleton
-                }
-            } // END if skeleton data
-
-            bool removed = true;
-            List<Person> toRemove = new List<Person>();
-            foreach (Person p in persons) // check to see if we are keeping track of people that are no longer in front of the installation and should be turned into memories
-            {
-                foreach (Body skeleton in kinect.Bodies)
-                {
-                    if (removed && p.compare(skeleton)) // assume removed until we've found the person's skeleton
-                    {
-                        removed = false;
-                    }
-                }
-
-                if (removed) // if the person is no longer physically in front of the installation
-                {
-                    memories.Add(p.getMemory()); // add person's memory to our list of memories
-                    toRemove.Add(p); // remove person from our list of currently tracked persons
-                  //  Console.Write("person removed");
-                }
-                else // if the person is still physically in front of installation and being tracked
-                {
-                    p.takeSnapshot(); // add to that person's memory
-                   // p.getMemory().render(persons);
-                }
+                addSkeletons();
+                allPoints = findPoints();
             }
 
-            foreach(Person p in toRemove)
-            {
-                persons.Remove(p);
-                Console.WriteLine("removed " + p.getID());
-            }
-            toRemove.Clear();
+            // Are we keeping track of anyone that is no longer in front of the kinect?
+            removeOrSnap();
 
+            // Render each memory
             foreach (Memory mem in memories) // display each memory
             {
                 mem.render(persons); // call the render method for each memory so they can draw themselves to the screen
@@ -147,8 +102,11 @@ namespace workshop17
             Console.WriteLine(persons.Count + " persons");
             Console.WriteLine(memories.Count + " memories");
             Console.WriteLine("----");
+            allJoints.Clear();
+            //allPoints.Clear();
 
         } // END onFrameUpdate()
+
         double mouseX0 = 0.0;
         double mouseY0 = 0.0;
         public void MouseMove(double x, double y, MouseButtons button)
@@ -172,5 +130,135 @@ namespace workshop17
                 Distance += dy * 0.01;
             }
         }
+
+
+        // Function findPoints
+        //  
+        // Returns a list of kinect points associated with all joint data stored in the variable allJoints
+        public List<List<KinectPoint>> findPoints()
+        {
+            List<List<KinectPoint>> allKPoints = new List<List<KinectPoint>>();
+            List<KinectPoint> tempPoints;
+            KinectPoint kp;
+            bool add;
+            double dist;
+
+            if (allJoints != null && allJoints.Count > 0)
+            {
+                foreach (List<Vector3d> jointPoints in allJoints) // For every user's joints
+                {
+                    tempPoints = new List<KinectPoint>();
+                    allKPoints.Add(tempPoints);
+
+                    if (jointPoints != null && jointPoints.Count > 0) // if they have joints
+                    {
+                        for (int j = 0; j < kinect.DepthHeight; j += 3) // find the kinect points closest to them
+                        {
+                            for (int k = 0; k < kinect.DepthWidth; k += 3)
+                            {
+                                kp = kinect.Points[k, j];
+                                add = false;
+                                foreach (Vector3d jointPoint in jointPoints)
+                                {
+                                    if (!add)
+                                    {
+                                        dist = Math.Abs(Vector3d.Subtract(kp.p, jointPoint).Length);
+                                        if (dist <= .25) // if the point is within the threshold, add it
+                                        {
+                                            add = true;
+                                        }
+                                    }
+                                }
+
+                                if (add)
+                                {
+                                    tempPoints.Add(kp);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            
+            return allKPoints;
+        }
+
+
+        // Function addSkeletons
+        //
+        // Gets the joint data for every person object ---- may have to do this after add (or remove).
+        // If it finds a person who has just been detected by the kinect this frame, it will add them to our list of persons
+        public void addSkeletons()
+        {
+            bool identified = false;
+            bool getJoints = true;
+            foreach (Body skeleton in kinect.Bodies)  // do I have a person object for each skeleton
+            {
+                foreach (Person p in persons)
+                {
+                    if (getJoints) // collect joint data for every person
+                    {
+                        getJoints = false;
+                        allJoints.Add(p.getJoints());
+                    }
+                    if (!identified && p.compare(skeleton)) // ignore previously identified person
+                    {
+                        identified = true;
+                    }
+                }
+                if (!identified && skeleton.TrackingId != 0) // if we haven't identified the person, add them to our persons list.
+                {
+                    persons.Add(new Person(skeleton, kinect));
+                }
+
+                identified = false; // reset 'identified' for next skeleton
+            }
+        }
+
+        // Function removeOrSnap
+        //
+        // This function either removes the person object (and stores their memory) of a person no longer being tracked by the kinect 
+        // OR it invokes taking a snapshot of that person
+        
+        public void removeOrSnap()
+        {
+            bool removed = true;
+            List<Person> toRemove = new List<Person>();
+            Person pp;
+            for (int i = 0; i < persons.Count; i++) // check to see if we are keeping track of people that are no longer in front of the installation and should be turned into memories
+            {
+                pp = persons[i];
+                foreach (Body skeleton in kinect.Bodies)
+                {
+                    if (removed && pp.compare(skeleton)) // assume removed until we've found the person's skeleton
+                    {
+                        removed = false;
+                    }
+                }
+
+                if (removed) // if the person is no longer physically in front of the installation
+                {
+                    memories.Add(pp.getMemory()); // add person's memory to our list of memories
+                    toRemove.Add(pp); // remove person from our list of currently tracked persons
+                                      //  Console.Write("person removed");
+                }
+                else // if the person is still physically in front of installation and being tracked
+                {                    
+                    if(i < allPoints.Count && allPoints[i] != null && allPoints[i].Count > 0)
+                    {
+                        pp.takeSnapshot(allPoints[i]); // add to that person's memory
+                    }
+                   
+                }
+            }
+
+            foreach (Person p in toRemove)
+            {
+                persons.Remove(p);
+                Console.WriteLine("removed " + p.getID());
+            }
+            toRemove.Clear();
+        }
+
     }
 }

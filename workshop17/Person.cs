@@ -50,48 +50,14 @@ namespace workshop17
         //  This function takes a snapshot of the person as is 
         //      (still unsure whether this is an picture, colored points, whatever) 
         //      and adds that snapshot to the person’s memory.
-        public void takeSnapshot()
+        public void takeSnapshot(List<KinectPoint> points)
         {
-            List<KinectPoint> points = new List<KinectPoint>();
-            double dist;
-            KinectPoint kp;
-            bool add;
-            List<Vector3d> jointPoints = getJoints();
-            if (myBody.Joints != null && myBody.Joints.Count > 0)
+            if(points != null && points.Count > 0)
             {
-                // checks to see if the point is within range of joint
-
-                for (int j = 0; j < kinect.DepthHeight; j += 3)
-                {
-                    for (int i = 0; i < kinect.DepthWidth; i += 3)
-                    {
-                        kp = kinect.Points[i, j];
-                        add = false;
-                        foreach(Vector3d jointPoint in jointPoints)
-                        {
-                            if (!add)
-                            {
-                                dist = Math.Abs(Vector3d.Subtract(kp.p, jointPoint).Length);
-                                if (dist <= .3)
-                                { 
-                                    add = true;
-                                }
-                            }
-                        }
-                        
-                        if (add)
-                        {
-                            points.Add(kp);
-                        }
-                    }
-                }
-                    myMemory.add(points);
-  
-                
+                myMemory.add(points);
                 Console.WriteLine("ID " + id + " new frame: " + myMemory.Count() + " " + " points");
             } else
             {
-
                 Console.Write("no joints");
             }
         }

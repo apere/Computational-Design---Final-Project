@@ -19,7 +19,6 @@ namespace workshop17
         ulong id;
         //List<images> frames; // each index represents a collection of snapshots or photos taken of the person
         int currentFrame; // the index of the snapshot that should be displayed next time render is called
-        int frameDirection;
         List<List<KinectPoint>> snapshots;
 
         // Constructor
@@ -29,7 +28,6 @@ namespace workshop17
             // initialize instance variables & other setup
             snapshots = new List<List<KinectPoint>>();
             currentFrame = 0;
-            frameDirection = 1;
             id = i;
         }
 
@@ -113,17 +111,12 @@ namespace workshop17
 
             Console.WriteLine("mem" + id + " frame:" + currentFrame);
 
-            currentFrame = currentFrame + frameDirection;
+            currentFrame = currentFrame + 1;
             Console.Write(snapshots.Count + " snapshots");
             if(currentFrame >= snapshots.Count)
             {
-                frameDirection = -1;
-                currentFrame = currentFrame - 2;
-            } else if(currentFrame < 0)
-            {
-                frameDirection = 1;
-                currentFrame = currentFrame + frameDirection;
-            }
+                currentFrame = 0;
+            } 
         }
 
     }
