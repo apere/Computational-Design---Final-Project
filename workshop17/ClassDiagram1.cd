@@ -1,2 +1,39 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ClassDiagram /> 
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="workshop17.KinectHelper" Collapsed="true">
+    <Position X="1.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAgBAAEMAAAAgSAYAihAAgoQAGAAAABAIGAAQQKCGIA=</HashCode>
+      <FileName>KinectHelper.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="workshop17.MediaWindow">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAQAABAAAERQAQAAAAGBEAADAAABAgUAEAACAQAI=</HashCode>
+      <FileName>MediaWindow.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="workshop17.Memory">
+    <Position X="7" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABJAACQEgAAAACCAAAAAAEAAAAAAAAAAEAAAAAASAgA=</HashCode>
+      <FileName>Memory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="workshop17.Person">
+    <Position X="5.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAIAAAAAACAACAAAAAAAAEAAAgAAAAAAAIAAAAQgI=</HashCode>
+      <FileName>Person.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Struct Name="workshop17.KinectPoint" Collapsed="true">
+    <Position X="1.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAIEEAIAAAAAA=</HashCode>
+      <FileName>KinectHelper.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
