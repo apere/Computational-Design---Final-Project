@@ -10,6 +10,8 @@ using OpenTK.Graphics;
 using Microsoft.Kinect;
 
 using System.Windows.Forms;
+using System.ComponentModel;
+using System.Threading;
 
 namespace workshop17
 {
@@ -20,11 +22,14 @@ namespace workshop17
         public double MouseX = 0.0; //location of the mouse along X
         public double MouseY = 0.0; //location of the mouse along Y
 
+        BackgroundWorker bw = new BackgroundWorker();
 
 
         public KinectHelper kinect = new KinectHelper(true, true, true);
         public List<Person> persons = new List<Person>();
         public List<Memory> memories = new List<Memory>();
+
+
 
 
         //initialization function. Everything you write here is executed once in the beginning of the program
@@ -38,7 +43,7 @@ namespace workshop17
             kinect.Close();
         }
 
-        public double AngleXZ = 0.0;
+        public double AngleXZ = 300.0;
         public double AngleY = 0.0;
         public double Distance = 4.0;
 
@@ -49,6 +54,7 @@ namespace workshop17
         //animation function. This contains code executed 20 times per second.
         public void OnFrameUpdate()
         {
+
             GL.ClearColor(1f, 1f, 1f, 1.0f);
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
@@ -64,7 +70,20 @@ namespace workshop17
             Matrix4d vmat = Matrix4d.LookAt(Eye, Target, Up);
             GL.LoadMatrix(ref vmat);
 
-          
+
+            GL.Enable(EnableCap.Lighting); //enable lighting calculations
+            GL.Enable(EnableCap.Light0);    //enable the first light
+            GL.Light(LightName.Light0, LightParameter.Position, new OpenTK.Vector4((float)Target.X, (float)Target.Y, (float)Target.Z + 20, 2.0f)); //set light position and color
+            GL.Light(LightName.Light0, LightParameter.Diffuse, new OpenTK.Vector4(1.0f, 1.0f, 1.0f, 125.0f));
+            GL.Light(LightName.Light0, LightParameter.Specular, new OpenTK.Vector4(1.0f, 1.0f, 1.0f, 0.0f));
+
+            GL.ColorMaterial(MaterialFace.FrontAndBack, ColorMaterialParameter.Diffuse); //enable material
+            GL.Enable(EnableCap.ColorMaterial);
+
+            GL.LightModel(LightModelParameter.LightModelTwoSide, 1); //set lighting model 
+            GL.LightModel(LightModelParameter.LightModelLocalViewer, 1);
+
+
             if (kinect.HasSkeletonData && kinect.HasDepthData)
             {
                 //GL.Enable(EnableCap.DepthTest);

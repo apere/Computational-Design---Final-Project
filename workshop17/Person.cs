@@ -28,6 +28,24 @@ namespace workshop17
             Console.WriteLine("new person " + id);
         }
 
+        // Function getJoints
+        //
+        // Returns a list of joints & their location in 3-space
+        public List<Vector3d> getJoints()
+        {
+            CameraSpacePoint joint;
+            IEnumerable<JointType> keys = myBody.Joints.Keys;
+            List<Vector3d> jointPoints = new List<Vector3d>();
+            foreach (JointType key in keys)
+            {
+                joint = myBody.Joints[key].Position;
+                jointPoints.Add(new Vector3d(joint.X, joint.Y, joint.Z));
+
+            }
+
+            return jointPoints;
+        }
+
         // Function takeSnapshot
         //  This function takes a snapshot of the person as is 
         //      (still unsure whether this is an picture, colored points, whatever) 
@@ -37,31 +55,24 @@ namespace workshop17
             List<KinectPoint> points = new List<KinectPoint>();
             double dist;
             KinectPoint kp;
-            CameraSpacePoint joint;
-            Vector3d jo;
-            int numJoints = myBody.Joints.Count;
             bool add;
-            IEnumerable<JointType> keys = myBody.Joints.Keys;
-
+            List<Vector3d> jointPoints = getJoints();
             if (myBody.Joints != null && myBody.Joints.Count > 0)
             {
-
                 // checks to see if the point is within range of joint
 
-                for (int j = 0; j < kinect.DepthHeight; j += 1)
+                for (int j = 0; j < kinect.DepthHeight; j += 3)
                 {
-                    for (int i = 0; i < kinect.DepthWidth; i += 1)
+                    for (int i = 0; i < kinect.DepthWidth; i += 3)
                     {
                         kp = kinect.Points[i, j];
                         add = false;
-                        foreach(JointType key in keys)
+                        foreach(Vector3d jointPoint in jointPoints)
                         {
                             if (!add)
                             {
-                                joint = myBody.Joints[key].Position;
-                                jo = new Vector3d(joint.X, joint.Y, joint.Z);
-                                dist = Math.Abs(Vector3d.Subtract(kp.p, jo).Length);
-                                if (dist <= .25)
+                                dist = Math.Abs(Vector3d.Subtract(kp.p, jointPoint).Length);
+                                if (dist <= .3)
                                 { 
                                     add = true;
                                 }

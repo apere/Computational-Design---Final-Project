@@ -3,12 +3,12 @@ using Microsoft.Kinect;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 
 using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Graphics;
+
 
 namespace workshop17
 {
@@ -19,14 +19,17 @@ namespace workshop17
         ulong id;
         //List<images> frames; // each index represents a collection of snapshots or photos taken of the person
         int currentFrame; // the index of the snapshot that should be displayed next time render is called
+        int frameDirection;
         List<List<KinectPoint>> snapshots;
-       
+
         // Constructor
         public Memory(ulong i) // parameters?
         {
+            timeCreated = DateTime.Now;
             // initialize instance variables & other setup
             snapshots = new List<List<KinectPoint>>();
             currentFrame = 0;
+            frameDirection = 1;
             id = i;
         }
 
@@ -88,24 +91,38 @@ namespace workshop17
         public void render(List<Person> persons)
         {
             List < KinectPoint > currShot = snapshots[currentFrame];
+            double zIndex = currShot[0].p.Z;
             Console.WriteLine(currShot.Count);
+
+            GL.PointSize(3);  // Changing point size gives some cool abstract results
             GL.Enable(EnableCap.DepthTest);
-            GL.PointSize(1.0f);
             GL.Begin(PrimitiveType.Points);
-            foreach(KinectPoint kp in currShot)
+            // PrimitiveType.LineStrip  --- sorta nice
+            // PrimitiveType.QuadStrip -- even cooler
+            // PrimitiveType.TriangleFan -- weird but preserves face
+            // PrimitiveType.Triangles -- weird noisy silhouette
+            // 
+
+            foreach (KinectPoint kp in currShot)
             {
                     GL.Color4(kp.color);
-                    GL.Vertex3(kp.p);
+                    GL.Vertex3(kp.p.X, kp.p.Y, kp.p.Z);
+                
             }
             GL.End();
 
             Console.WriteLine("mem" + id + " frame:" + currentFrame);
 
-            currentFrame++;
+            currentFrame = currentFrame + frameDirection;
             Console.Write(snapshots.Count + " snapshots");
             if(currentFrame >= snapshots.Count)
             {
-                currentFrame = 0;
+                frameDirection = -1;
+                currentFrame = currentFrame - 2;
+            } else if(currentFrame < 0)
+            {
+                frameDirection = 1;
+                currentFrame = currentFrame + frameDirection;
             }
         }
 
