@@ -110,9 +110,8 @@ namespace workshop17
             GL.End();
 
             Console.WriteLine("mem" + id + " frame:" + currentFrame);
-
+        
             currentFrame = currentFrame + 1;
-            Console.Write(snapshots.Count + " snapshots");
             if(currentFrame >= snapshots.Count)
             {
                 currentFrame = 0;
