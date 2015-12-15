@@ -90,9 +90,10 @@ namespace workshop17
         {
             List < KinectPoint > currShot = snapshots[currentFrame];
             double zIndex = currShot[0].p.Z;
-            int offset = (DateTime.Now - timeCreated).Seconds / 30; // time offset for z-axis
+            double offset = (DateTime.Now - timeCreated).TotalSeconds / 20; // time offset for z-axis
+            double buzz = (DateTime.Now - timeCreated).Seconds/20;
 
-            GL.PointSize(3);  // Changing point size gives some cool abstract results
+            GL.PointSize(4);  // Changing point size gives some cool abstract results
             GL.Enable(EnableCap.DepthTest);
             GL.Begin(PrimitiveType.Points);
             // PrimitiveType.LineStrip  --- sorta nice
@@ -100,16 +101,18 @@ namespace workshop17
             // PrimitiveType.TriangleFan -- weird but preserves face
             // PrimitiveType.Triangles -- weird noisy silhouette
             // 
-
+            Random rand = new Random();
+            
             foreach (KinectPoint kp in currShot)
             {
-                    GL.Color4(kp.color);
-                    GL.Vertex3(kp.p.X, kp.p.Y, kp.p.Z + offset);
-                
+                GL.Color4(kp.color);
+                GL.Vertex3(kp.p.X,
+                    kp.p.Y,
+                    kp.p.Z + offset);
             }
             GL.End();
            
-            Console.WriteLine("mem" + id + " frame:" + currentFrame);
+            //Console.WriteLine("mem" + id + " frame:" + currentFrame);
         
             currentFrame = currentFrame + 1;
             if(currentFrame >= snapshots.Count)
