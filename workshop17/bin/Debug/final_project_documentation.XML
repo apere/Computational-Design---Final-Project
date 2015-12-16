@@ -21,6 +21,15 @@
             the contents of this method with the code editor.
             </summary>
         </member>
+        <member name="T:workshop17.MediaWindow">
+            <summary>
+            Media Window
+            Authors: Adam M Pere, Keebaik Sim, Enol Vallina
+            Introduction to Computational Design - Fall 2015, Harvard Graduate School of Design
+            
+            The MediaWindow class is where the OpenGL scene is set up and where the main communication with the Kinect Sensor happens.
+            </summary>
+        </member>
         <member name="M:workshop17.MediaWindow.Initialize">
             <summary>
             Initialize
@@ -61,6 +70,16 @@
             removeOrSnap
             This function either removes the person object (and stores their memory) of a person no longer being tracked by the kinect 
             OR it invokes taking a snapshot of that person
+            </summary>
+        </member>
+        <member name="T:workshop17.Memory">
+            <summary>
+            Memory Class
+            Authors: Adam M Pere, Keebaik Sim, Enol Vallina
+            Introduction to Computational Design - Fall 2015, Harvard Graduate School of Design
+            
+            The memory class represents a recording of people that were once standing in front of the kinect sensor but are no longer.
+            The 'memory' of a person object.
             </summary>
         </member>
         <member name="M:workshop17.Memory.#ctor(System.UInt64)">
@@ -128,6 +147,15 @@
             This function draws the current frame (snapshot) to the screen.
             
             The longer since timeCreated, the larger the z-index offset (frame pushed back)
+            </summary>
+        </member>
+        <member name="T:workshop17.Person">
+            <summary>
+            Person Class
+            Authors: Adam M Pere, Keebaik Sim, Enol Vallina
+            Introduction to Computational Design - Fall 2015, Harvard Graduate School of Design
+            
+            The person class represents a person that is physically standing in front of a kinect sensor
             </summary>
         </member>
         <member name="M:workshop17.Person.getMemory">

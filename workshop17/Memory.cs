@@ -151,6 +151,10 @@ namespace workshop17
         /// </summary>
         public void render()
         {
+            if(currentFrame >= snapshots.Count)
+            {
+                Console.WriteLine("too much " + currentFrame);
+            }
             List < KinectPoint > currShot = snapshots[currentFrame];
             double zIndex = currShot[0].p.Z;
             double offset = getTimeSinceCreated().TotalSeconds / 20; // time offset for z-axis
