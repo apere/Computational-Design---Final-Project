@@ -40,7 +40,7 @@
             this.glControl1.Name = "glControl1";
             this.glControl1.Size = new System.Drawing.Size(1096, 939);
             this.glControl1.TabIndex = 0;
-            this.glControl1.VSync = false;
+            this.glControl1.VSync = true;
             this.glControl1.Load += new System.EventHandler(this.glControl1_Load_1);
             // 
             // Form1
@@ -53,11 +53,11 @@
             this.Margin = new System.Windows.Forms.Padding(6);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "Form1";
+            this.Name = "FinalProject";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "Form1";
+            this.Text = "";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.ResumeLayout(false);
 

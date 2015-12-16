@@ -156,23 +156,20 @@ namespace workshop17
             double offset = getTimeSinceCreated().TotalSeconds / 20; // time offset for z-axis
             double buzz = getTimeSinceCreated().Seconds / 20;
 
-       
+
+            //**** Optimizations: 
+            //**** try putting Gl.Begin... outside of memeory (outside of the for loop in mediawindow) *****
+            //**** do you need to change the color every time?
+
 
             GL.PointSize(4);  // Changing point size gives some cool abstract results
             GL.Enable(EnableCap.DepthTest);
-            GL.Begin(PrimitiveType.LineStrip);
-            // PrimitiveType.LineStrip  --- sorta nice
-            // PrimitiveType.QuadStrip -- even cooler
-            // PrimitiveType.TriangleFan -- weird but preserves face
-            // PrimitiveType.Triangles -- weird noisy silhouette
-            
+            GL.Begin(PrimitiveType.Points); // try other primatives  
             
             foreach (KinectPoint kp in currShot)
             {
                 GL.Color4(kp.color);
-                GL.Vertex3(kp.p.X,
-                    kp.p.Y,
-                    kp.p.Z + offset); // time-offset
+                GL.Vertex3(kp.p); // add z-index offset?? ***** then change to scalar and add to the z OR use gltranslate?
             }
             GL.End();
            
