@@ -162,9 +162,9 @@ namespace workshop17
             List<Vector3d> jointPoints;
             KinectPoint kp;
             double dist;
-            int step = 10;
+            int step = 3;
 
-            if (allJoints != null && allJoints.Count > 0) // error checking
+            if (allJoints != null && allJoints.Count > 0) // error checking 
             {
                 foreach (ulong id in ids) // get all id's
                 {
@@ -257,7 +257,6 @@ namespace workshop17
             bool removed = true;
             List<Person> toRemove = new List<Person>();
             Person pp;
-            ICollection<ulong> ids = allPoints.Keys;
             int numPeople = persons.Count;
 
             for (int i = 0; i < numPeople; i++) // check to see if we are keeping track of people that are no longer in front of the installation and should be removed (turned into memories)
@@ -265,9 +264,11 @@ namespace workshop17
                 pp = persons[i];
                 foreach (Body skeleton in kinect.Bodies)
                 {
-                    if (removed && pp.compare(skeleton)) // assume removed until we've found the person's skeleton
+                    if (pp.compare(skeleton)) // assume removed until we've found the person's skeleton
                     {
+                        Console.WriteLine("Not removing person " + pp.getID());
                         removed = false;
+                        break;
                     }
                 }
 
@@ -275,16 +276,16 @@ namespace workshop17
                 {
                     memories.Add(pp.getMemory()); // add person's memory to our list of memories
                     toRemove.Add(pp); // remove person from our list of currently tracked persons
-                                      //  Console.Write("person removed");
+                    //  Console.Write("person removed");
                 }
                 else // if the person is still physically in front of installation and being tracked
                 {                    
-                    if(i < allPoints.Count && allPoints[pp.getID()] != null && allPoints[pp.getID()].Count > 0)
+                    if(allPoints.ContainsKey(pp.getID()) && allPoints[pp.getID()] != null && allPoints[pp.getID()].Count > 0)
                     {
                         pp.takeSnapshot(allPoints[pp.getID()]); // add to that person's memory
                     }
-                   
                 }
+                removed = true;
             }
 
             foreach (Person p in toRemove)

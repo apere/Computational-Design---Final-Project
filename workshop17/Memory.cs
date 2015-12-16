@@ -101,6 +101,7 @@ namespace workshop17
         public void add(List<KinectPoint> snapshotPoints) // parameters?
         {
             snapshots.Add(snapshotPoints);
+            Console.WriteLine("mem " + id + " " + snapshots.Count + "snapshots with " + snapshotPoints.Count + " points");
         }
 
 
@@ -162,9 +163,9 @@ namespace workshop17
             //**** do you need to change the color every time?
 
 
-            GL.PointSize(4);  // Changing point size gives some cool abstract results
+            GL.PointSize(3);  // Changing point size gives some cool abstract results
             GL.Enable(EnableCap.DepthTest);
-            GL.Begin(PrimitiveType.Points); // try other primatives  
+            GL.Begin(PrimitiveType.LineStrip); // try other primatives  
             
             foreach (KinectPoint kp in currShot)
             {
