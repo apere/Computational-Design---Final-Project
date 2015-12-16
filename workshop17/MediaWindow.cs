@@ -31,8 +31,9 @@ namespace workshop17
         public List<Person> persons = new List<Person>();                 // list of people currently standing in front of kinect sensor
         public List<Memory> memories = new List<Memory>();                // list of the 'memories' of people who once stood in front of the kinect sensor
 
-        public List<List<Vector3d>> allJoints = new List<List<Vector3d>>();         // list of all joints currently being detected - separated by user
-        public List<List<KinectPoint>> allPoints = new List<List<KinectPoint>>();   // list of all points within a certain distance of a joint - separated by user
+        public IDictionary<ulong, List< Vector3d >> allJoints = new Dictionary<ulong,List< Vector3d>>();        // list of all joints currently being detected - separated by user (key = id)
+        public IDictionary<ulong, List< KinectPoint >> allPoints = new Dictionary<ulong, List< KinectPoint >>();   // list of all points within a certain distance of a joint - separated by user (key = id)
+
 
         /// <summary>
         /// Initialize
@@ -153,51 +154,55 @@ namespace workshop17
         /// <summary>
         /// findPoints
         /// </summary>
-        /// <return>a list of kinect points associated with all joint data stored in the variable allJoints</return> 
-        public List<List<KinectPoint>> findPoints()
+        /// <return>a dictionary of user's kinect points. Each kinect point corresponds to a user's joint</return> 
+        public IDictionary<ulong, List<KinectPoint>> findPoints()
         {
-            List<List<KinectPoint>> allKPoints = new List<List<KinectPoint>>();
-            List<KinectPoint> tempPoints;
+            IDictionary<ulong, List<KinectPoint>> allKPoints = new Dictionary<ulong, List<KinectPoint>>();
+            ICollection<ulong> ids = allJoints.Keys;
+            List<Vector3d> jointPoints;
             KinectPoint kp;
-            bool add;
             double dist;
-            int step = 3;
+            int step = 10;
 
             if (allJoints != null && allJoints.Count > 0) // error checking
             {
-                foreach (List<Vector3d> jointPoints in allJoints) // loop through set of joints (each set is one user's joints)
+                foreach (ulong id in ids) // get all id's
                 {
-                    tempPoints = new List<KinectPoint>();
-                    allKPoints.Add(tempPoints);
-
-                    if (jointPoints != null && jointPoints.Count > 0) // error checking
+                    if (allJoints[id] != null && allJoints[id].Count > 0)
                     {
-                        for (int j = 0; j < kinect.DepthHeight; j += step) // loop through every kinect point, saving the ones within a certain distance
+                        allKPoints.Add(id, new List<KinectPoint>());
+                        
+                    }
+                    
+                }
+
+                ids = allKPoints.Keys; // only loop through ids that have joints
+
+                if (ids != null && ids.Count > 0)
+                {
+                    for (int j = 0; j < kinect.DepthHeight; j += step) // loop through every kinect point
+                    {
+                        for (int k = 0; k < kinect.DepthWidth; k += step)
                         {
-                            for (int k = 0; k < kinect.DepthWidth; k += step)
+                            kp = kinect.Points[k, j]; // get current KinectPoint
+
+                            foreach (ulong id in ids) // loop through every user (w/ joints)
                             {
-                                kp = kinect.Points[k, j];
-                                add = false;
-                                foreach (Vector3d jointPoint in jointPoints) // loop through every joint of this user comparing distance to point
+                                jointPoints = allJoints[id];
+                                foreach(Vector3d jointPoint in jointPoints) // check to see if current kinect point belongs to any joint
                                 {
-                                    if (!add)
+                                    dist = Math.Abs(Vector3d.Subtract(kp.p, jointPoint).Length);
+                                    if (dist <= .25) // if the point is within the threshold, add it
                                     {
-                                        dist = Math.Abs(Vector3d.Subtract(kp.p, jointPoint).Length);
-                                        if (dist <= .25) // if the point is within the threshold, add it
-                                        {
-                                            add = true;
-                                        }
+                                        allKPoints[id].Add(kp);
                                     }
                                 }
-
-                                if (add)
-                                {
-                                    tempPoints.Add(kp);
-                                }
+                                
                             }
                         }
                     }
-                }
+                } 
+                
             }
             
             return allKPoints;
@@ -212,6 +217,8 @@ namespace workshop17
         {
             bool identified = false;
             bool getJoints = true;
+            Person temp; 
+
             foreach (Body skeleton in kinect.Bodies)  // do I have a person object for each skeleton
             {
                 foreach (Person p in persons)
@@ -219,7 +226,7 @@ namespace workshop17
                     if (getJoints) // collect joint data for every person
                     {
                         getJoints = false;
-                        allJoints.Add(p.getJoints());
+                        allJoints.Add(p.getID(), p.getJoints());
                     }
                     if (!identified && p.compare(skeleton)) // ignore previously identified person
                     {
@@ -228,7 +235,12 @@ namespace workshop17
                 }
                 if (!identified && skeleton.TrackingId != 0) // if we haven't identified the person, add them to our persons list.
                 {
-                    persons.Add(new Person(skeleton, kinect));
+                    temp = new Person(skeleton, kinect);
+                    persons.Add(temp);
+                    if(kinect.Bodies.Last() == skeleton)
+                    {
+                        allJoints.Add(temp.getID(), temp.getJoints());
+                    }
                 }
 
                 identified = false; // reset 'identified' for next skeleton
@@ -245,7 +257,10 @@ namespace workshop17
             bool removed = true;
             List<Person> toRemove = new List<Person>();
             Person pp;
-            for (int i = 0; i < persons.Count; i++) // check to see if we are keeping track of people that are no longer in front of the installation and should be removed (turned into memories)
+            ICollection<ulong> ids = allPoints.Keys;
+            int numPeople = persons.Count;
+
+            for (int i = 0; i < numPeople; i++) // check to see if we are keeping track of people that are no longer in front of the installation and should be removed (turned into memories)
             {
                 pp = persons[i];
                 foreach (Body skeleton in kinect.Bodies)
@@ -264,9 +279,9 @@ namespace workshop17
                 }
                 else // if the person is still physically in front of installation and being tracked
                 {                    
-                    if(i < allPoints.Count && allPoints[i] != null && allPoints[i].Count > 0)
+                    if(i < allPoints.Count && allPoints[pp.getID()] != null && allPoints[pp.getID()].Count > 0)
                     {
-                        pp.takeSnapshot(allPoints[i]); // add to that person's memory
+                        pp.takeSnapshot(allPoints[pp.getID()]); // add to that person's memory
                     }
                    
                 }

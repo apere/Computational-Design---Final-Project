@@ -160,7 +160,7 @@ namespace workshop17
 
             GL.PointSize(4);  // Changing point size gives some cool abstract results
             GL.Enable(EnableCap.DepthTest);
-            GL.Begin(PrimitiveType.Points);
+            GL.Begin(PrimitiveType.LineStrip);
             // PrimitiveType.LineStrip  --- sorta nice
             // PrimitiveType.QuadStrip -- even cooler
             // PrimitiveType.TriangleFan -- weird but preserves face

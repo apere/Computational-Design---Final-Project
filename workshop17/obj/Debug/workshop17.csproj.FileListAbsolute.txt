@@ -16,4 +16,3 @@ C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---
 C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\obj\Debug\workshop17.exe
 C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\obj\Debug\workshop17.pdb
 C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\obj\Debug\workshop17.csprojResolveAssemblyReference.cache
-C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\workshop17\bin\Debug\final_project_documentation.XML
