@@ -70,9 +70,9 @@ namespace workshop17
             List<OpenTK.Vector3d> pointsT = new List<OpenTK.Vector3d>();
             double heightT = 0.5;
             double lengthT = 100;
-            float pointdensity = 0.1f;
+            float pointdensity = 0.03f;
 
-            GL.Begin(PrimitiveType.LineLoop);
+            GL.Begin(PrimitiveType.Points);
             GL.Enable(EnableCap.DepthTest);
             for (float v = 0; v <= lengthT * Math.PI; v=v+ pointdensity)
             {
@@ -88,15 +88,6 @@ namespace workshop17
                 }
             }
             GL.End();
-
-            /*float factorP = 1.50f;
-            GL.Begin(PrimitiveType.Points);
-            GL.Enable(EnableCap.DepthTest);
-            for (int i=0; i < pointsT.Count; i++)
-            {
-                pointsT[i].Z = pointsT[i] + factorP;
-
-            }*/
 
             //...............................................Lines
             /*GL.Begin(PrimitiveType.Points);
