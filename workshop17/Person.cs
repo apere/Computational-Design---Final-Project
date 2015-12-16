@@ -5,6 +5,12 @@ using OpenTK;
 using OpenTK.Graphics.OpenGL;
 using OpenTK.Graphics;
 
+<<<<<<< HEAD
+=======
+
+
+
+>>>>>>> parent of 665b8ce... updated comments etc
 namespace workshop17
 {
     /// <summary>
@@ -32,28 +38,9 @@ namespace workshop17
             Console.WriteLine("new person " + id);
         }
 
-        /// <summary>
-        /// getMemory
-        /// </summary>
-        /// <returns>this person's memory object</returns>
-        public Memory getMemory()
-        {
-            return myMemory;
-        }
-
-        /// <summary>
-        /// getID
-        /// </summary>
-        /// <returns> The ID of this string</returns>
-        public ulong getID()
-        {
-            return id;
-        }
-
-        /// <summary>
-        /// Function getJoints
-        /// </summary>
-        /// <returns>a list of this person's joints & their location in 3-space/returns>
+        // Function getJoints
+        //
+        // Returns a list of joints & their location in 3-space
         public List<Vector3d> getJoints()
         {
             CameraSpacePoint joint;
@@ -69,32 +56,46 @@ namespace workshop17
             return jointPoints;
         }
 
-        /// <summary>
-        /// Function takeSnapshot
-        /// This function takes a snapshot of the person as is (still unsure whether this is an picture, colored points, whatever) 
-        /// and adds that snapshot to the person’s memory.
-        /// </summary>
-        /// <param name="points"> List of points in 3-space with color data that should be preserved in memory</param>
+        // Function takeSnapshot
+        //  This function takes a snapshot of the person as is 
+        //      (still unsure whether this is an picture, colored points, whatever) 
+        //      and adds that snapshot to the person’s memory.
         public void takeSnapshot(List<KinectPoint> points)
         {
             if(points != null && points.Count > 0)
             {
                 myMemory.add(points);
-                Console.WriteLine("ID " + id + " new frame: " + myMemory.getNumberOfFrames() + " " + " points");
+                Console.WriteLine("ID " + id + " new frame: " + myMemory.Count() + " " + " points");
             } else
             {
                 Console.Write("no joints");
             }
         }
 
+        // Function getMemory
+        //
+        // Returns
+        //  this person's memory object
+        public Memory getMemory()
+        {
+            return myMemory;
+        }
 
-        /// <summary>
-        /// compare
-        /// This function takes in a Body object & returns true if it is the body
-        ///  that corresponds to this person and false otherwise
-        /// </summary>
-        /// <param name="Skeleton">the Body object we are comparing with (Kinect Skeleton)</param>
-        /// <returns>whether or not the skeleton belongs to this person</returns>
+        public ulong getID()
+        {
+            return id;
+        }
+
+
+        // Function compare
+        //  This function takes in a Body object & returns true if it is the body
+        //      that corresponds to this person and false otherwise
+        //
+        // Parameters
+        // Body Skeleton - the Body object we are comparing with
+        //
+        // Return
+        //  whether or not the skeleton belongs to this person
         public bool compare(Body Skeleton)
         {
             if (Skeleton != null)
@@ -104,11 +105,6 @@ namespace workshop17
             return false;
 
         }
-
-        /// <summary>
-        /// getPosition
-        /// </summary>
-        /// <returns> Returns a 3D vector representing one of this person's joints</returns>
         public Vector3d getPosition() {
             Vector3d ps=new Vector3d(myBody.Joints[0].Position.X, myBody.Joints[0].Position.Y, myBody.Joints[0].Position.Z);
             return ps;
