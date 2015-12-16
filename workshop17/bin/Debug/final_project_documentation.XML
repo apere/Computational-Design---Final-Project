@@ -1,0 +1,211 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>workshop17</name>
+    </assembly>
+    <members>
+        <member name="F:workshop17.Form1.components">
+            <summary>
+            Required designer variable.
+            </summary>
+        </member>
+        <member name="M:workshop17.Form1.Dispose(System.Boolean)">
+            <summary>
+            Clean up any resources being used.
+            </summary>
+            <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        </member>
+        <member name="M:workshop17.Form1.InitializeComponent">
+            <summary>
+            Required method for Designer support - do not modify
+            the contents of this method with the code editor.
+            </summary>
+        </member>
+        <member name="T:workshop17.MediaWindow">
+            <summary>
+            Media Window
+            Authors: Adam M Pere, Keebaik Sim, Enol Vallina
+            Introduction to Computational Design - Fall 2015, Harvard Graduate School of Design
+            
+            The MediaWindow class is where the OpenGL scene is set up and where the main communication with the Kinect Sensor happens.
+            </summary>
+        </member>
+        <member name="M:workshop17.MediaWindow.Initialize">
+            <summary>
+            Initialize
+            </summary>
+        </member>
+        <member name="M:workshop17.MediaWindow.Terminate">
+            <summary>
+            Terminate
+            </summary>
+        </member>
+        <member name="M:workshop17.MediaWindow.OnFrameUpdate">
+            <summary>
+            onFrameUpdate
+            This is the animation function. It is called ~20x per second to update the screen
+            </summary>
+        </member>
+        <member name="M:workshop17.MediaWindow.MouseMove(System.Double,System.Double,System.Windows.Forms.MouseButtons)">
+            <summary>
+            MouseMove
+            Use the mouse to change the camera's view
+            </summary>
+        </member>
+        <member name="M:workshop17.MediaWindow.findPoints">
+            <summary>
+            findPoints
+            </summary>
+            <return>a list of kinect points associated with all joint data stored in the variable allJoints</return> 
+        </member>
+        <member name="M:workshop17.MediaWindow.addSkeletons">
+            <summary>
+            addSkeletons
+            Gets the joint data for every person object ---- may have to do this after add (or remove).
+            If it finds a person who has just been detected by the kinect this frame, it will add them to our list of persons
+            </summary>
+        </member>
+        <member name="M:workshop17.MediaWindow.removeOrSnap">
+            <summary>
+            removeOrSnap
+            This function either removes the person object (and stores their memory) of a person no longer being tracked by the kinect 
+            OR it invokes taking a snapshot of that person
+            </summary>
+        </member>
+        <member name="T:workshop17.Memory">
+            <summary>
+            Memory Class
+            Authors: Adam M Pere, Keebaik Sim, Enol Vallina
+            Introduction to Computational Design - Fall 2015, Harvard Graduate School of Design
+            
+            The memory class represents a recording of people that were once standing in front of the kinect sensor but are no longer.
+            The 'memory' of a person object.
+            </summary>
+        </member>
+        <member name="M:workshop17.Memory.#ctor(System.UInt64)">
+            <summary>
+            Constructor
+            </summary>
+            <param name="i">The ID associated with this memory. It should be the same ID as the person object this memory belongs to and the kinect skeleton associated with that body</param>
+        </member>
+        <member name="M:workshop17.Memory.getID">
+            <summary>
+            getID
+            </summary>
+            <returns>The ID of this memory object</returns>
+        </member>
+        <member name="M:workshop17.Memory.getTimeCreated">
+            <summary>
+            getTimeCreated
+            </summary>
+            <returns>A DateTime object representing the time this memory was first instantiated</returns>
+        </member>
+        <member name="M:workshop17.Memory.getTimeSinceCreated">
+            <summary>
+            getTimeSinceCreated
+            </summary>
+            <returns>A TimeSpan object representing the amount of time that has passed since this object was created</returns>
+        </member>
+        <member name="M:workshop17.Memory.getNumberOfFrames">
+            <summary>
+            getNumberOfFrames
+            </summary>
+            <returns>the number of frames contained in this memory</returns>
+        </member>
+        <member name="M:workshop17.Memory.getCurrentFrameIndex">
+            <summary>
+            getCurrentFrameIndex
+            </summary>
+            <returns>the index of the currently displayed frame</returns>
+        </member>
+        <member name="M:workshop17.Memory.getLocation">
+            <summary>
+            getLocation
+            </summary>
+            <returns>The location of this memory = the Vector3d of the first point in the current frame</returns>
+        </member>
+        <member name="M:workshop17.Memory.add(System.Collections.Generic.List{workshop17.KinectPoint})">
+            <summary>
+            add
+            This function is called to add a ‘snapshot’ to our array of frames. This should only be called from a person object.
+            </summary>
+            <param name="snapshotPoints">A list of Kinect points that represent an image that we want to add to this memory</param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:workshop17.Memory.getClosestPerson(System.Collections.Generic.List{workshop17.Person})" -->
+        <member name="M:workshop17.Memory.getOrientation(System.Collections.Generic.List{workshop17.Person})">
+            <summary>
+            getOrientation
+            Finds the direction facing the closest person
+            </summary>
+            <param name="persons"></param>
+            <returns>A Vector pointing in the direction that we want to face</returns>
+        </member>
+        <member name="M:workshop17.Memory.render">
+            <summary>
+            render
+            This function should be called every time we want to display and update the memory. 
+            This function draws the current frame (snapshot) to the screen.
+            
+            The longer since timeCreated, the larger the z-index offset (frame pushed back)
+            </summary>
+        </member>
+        <member name="T:workshop17.Person">
+            <summary>
+            Person Class
+            Authors: Adam M Pere, Keebaik Sim, Enol Vallina
+            Introduction to Computational Design - Fall 2015, Harvard Graduate School of Design
+            
+            The person class represents a person that is physically standing in front of a kinect sensor
+            </summary>
+        </member>
+        <member name="M:workshop17.Person.getMemory">
+            <summary>
+            getMemory
+            </summary>
+            <returns>this person's memory object</returns>
+        </member>
+        <member name="M:workshop17.Person.getID">
+            <summary>
+            getID
+            </summary>
+            <returns> The ID of this string</returns>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:workshop17.Person.getJoints" -->
+        <member name="M:workshop17.Person.takeSnapshot(System.Collections.Generic.List{workshop17.KinectPoint})">
+            <summary>
+            Function takeSnapshot
+            This function takes a snapshot of the person as is (still unsure whether this is an picture, colored points, whatever) 
+            and adds that snapshot to the person’s memory.
+            </summary>
+            <param name="points"> List of points in 3-space with color data that should be preserved in memory</param>
+        </member>
+        <!-- Badly formed XML comment ignored for member "M:workshop17.Person.compare(Microsoft.Kinect.Body)" -->
+        <member name="M:workshop17.Person.getPosition">
+            <summary>
+            getPosition
+            </summary>
+            <returns> Returns a 3D vector representing one of this person's joints</returns>
+        </member>
+        <member name="M:workshop17.Program.Main">
+            <summary>
+            The main entry point for the application.
+            </summary>
+        </member>
+        <member name="T:workshop17.Properties.Resources">
+            <summary>
+              A strongly-typed resource class, for looking up localized strings, etc.
+            </summary>
+        </member>
+        <member name="P:workshop17.Properties.Resources.ResourceManager">
+            <summary>
+              Returns the cached ResourceManager instance used by this class.
+            </summary>
+        </member>
+        <member name="P:workshop17.Properties.Resources.Culture">
+            <summary>
+              Overrides the current thread's CurrentUICulture property for all
+              resource lookups using this strongly typed resource class.
+            </summary>
+        </member>
+    </members>
+</doc>
