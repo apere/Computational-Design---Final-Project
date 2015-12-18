@@ -143,6 +143,7 @@ namespace workshop17
             return this.getClosestPerson(persons).getPosition().Normalized();
         }
 
+        public int step = 1;
         /// <summary>
         /// render
         /// This function should be called every time we want to display and update the memory. 
@@ -152,35 +153,51 @@ namespace workshop17
         /// </summary>
         public void render()
         {
-            List < KinectPoint > currShot = snapshots[currentFrame];
-            double zIndex = currShot[0].p.Z;
-            double offset = getTimeSinceCreated().TotalSeconds / 20; // time offset for z-axis
-            double buzz = getTimeSinceCreated().Seconds / 20;
-
-
-            //**** Optimizations: 
-            //**** try putting Gl.Begin... outside of memeory (outside of the for loop in mediawindow) *****
-            //**** do you need to change the color every time?
-
-
-            GL.PointSize(3);  // Changing point size gives some cool abstract results
-            GL.Enable(EnableCap.DepthTest);
-            GL.Begin(PrimitiveType.LineStrip); // try other primatives  
-            
-            foreach (KinectPoint kp in currShot)
+            if (snapshots.Count > 0 && currentFrame >= 0 && currentFrame < snapshots.Count)
             {
-                GL.Color4(kp.color);
-                GL.Vertex3(kp.p); // add z-index offset?? ***** then change to scalar and add to the z OR use gltranslate?
+                List<KinectPoint> currShot = snapshots[currentFrame];
+                double zIndex = currShot[0].p.Z;
+                double offset = getTimeSinceCreated().TotalSeconds / 20; // time offset for z-axis
+                double buzz = getTimeSinceCreated().Seconds / 20;
+
+
+                //**** Optimizations: 
+                //**** try putting Gl.Begin... outside of memeory (outside of the for loop in mediawindow) *****
+                //**** do you need to change the color every time?
+
+
+                GL.PointSize(4);  // Changing point size gives some cool abstract results
+                GL.Enable(EnableCap.DepthTest);
+                GL.Begin(PrimitiveType.Points); // try other primatives  
+                double avg;
+                foreach (KinectPoint kp in currShot)
+                {
+                    avg = (kp.color.R + kp.color.G + kp.color.G) / 3;
+                    GL.Color4(avg, avg, avg, 1);
+                    GL.Vertex3(kp.p.X, kp.p.Y, kp.p.Z + offset); // add z-index offset?? ***** then change to scalar and add to the z OR use gltranslate?
+                }
+                GL.End();
+
+                //Console.WriteLine("mem " + id + " frame:" + currentFrame); // debugging
+
+                currentFrame = currentFrame + step;
+                if (currentFrame >= snapshots.Count - 10) // start over?
+                {
+                    step = -1;
+                }
+                else if (currentFrame <= 0)
+                {
+                    step = 1;
+                }
             }
-            GL.End();
-           
-            //Console.WriteLine("mem " + id + " frame:" + currentFrame); // debugging
-        
-            currentFrame = currentFrame + 1;
-            if(currentFrame >= snapshots.Count) // start over?
+            if(currentFrame < 0)
             {
                 currentFrame = 0;
-            } 
+                step = 1;
+            } else if(currentFrame >= snapshots.Count - 10)
+            {
+                currentFrame = snapshots.Count - 10;
+            }
         }
 
     }

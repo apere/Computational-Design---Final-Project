@@ -10,6 +10,7 @@ using OpenTK.Graphics;
 using Microsoft.Kinect;
 
 using System.Windows.Forms;
+using System.Media;
 
 namespace workshop17
 {
@@ -34,6 +35,9 @@ namespace workshop17
         public IDictionary<ulong, List< Vector3d >> allJoints = new Dictionary<ulong,List< Vector3d>>();        // list of all joints currently being detected - separated by user (key = id)
         public IDictionary<ulong, List< KinectPoint >> allPoints = new Dictionary<ulong, List< KinectPoint >>();   // list of all points within a certain distance of a joint - separated by user (key = id)
 
+        Background b = new Background();
+        WMPLib.WindowsMediaPlayer everlastingSound =  new WMPLib.WindowsMediaPlayer();
+        WMPLib.WindowsMediaPlayer drop = new WMPLib.WindowsMediaPlayer();
 
         /// <summary>
         /// Initialize
@@ -41,6 +45,10 @@ namespace workshop17
         public void Initialize()
         {
             kinect.Initialize();
+            everlastingSound.URL = @"C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\media\ambient_loop.wav";
+            drop.URL = @"C:\Users\adam pere\Documents\Visual Studio 2015\Projects\Computational-Design---Final-Project\media\echo1-1drop.wav";
+            everlastingSound.settings.setMode("loop", true);
+            everlastingSound.controls.play();
         }
 
         /// <summary>
@@ -75,28 +83,26 @@ namespace workshop17
             GL.Clear(ClearBufferMask.ColorBufferBit | ClearBufferMask.DepthBufferBit);
 
             GL.MatrixMode(MatrixMode.Projection);
-            Matrix4d pmat = Matrix4d.Perspective(Math.PI * 0.35, Width / Height, 0.1, 100.0);
+            Matrix4d pmat = Matrix4d.Perspective(Math.PI * 0.35, Width / Height, 0.1, 700.0);
             GL.LoadMatrix(ref pmat);
 
             GL.MatrixMode(MatrixMode.Modelview);
             Eye.X = Target.X + Distance * Math.Cos(AngleXZ) * Math.Cos(AngleY);
-            Eye.Y = Target.Y + Distance * Math.Sin(AngleY); 
+            Eye.Y = Target.Y + Distance * Math.Sin(AngleY) - .8; 
             Eye.Z = Target.Z + Distance * Math.Sin(AngleXZ) * Math.Cos(AngleY);
 
             Matrix4d vmat = Matrix4d.LookAt(Eye, Target, Up);
             GL.LoadMatrix(ref vmat);
 
-            GL.Enable(EnableCap.Lighting); //enable lighting calculations
-            GL.Enable(EnableCap.Light0);    //enable the first light
-            GL.Light(LightName.Light0, LightParameter.Position, new OpenTK.Vector4((float)Target.X, (float)Target.Y, (float)Target.Z + 20, 2.0f)); //set light position and color
-            GL.Light(LightName.Light0, LightParameter.Diffuse, new OpenTK.Vector4(1.0f, 1.0f, 1.0f, 125.0f));
-            GL.Light(LightName.Light0, LightParameter.Specular, new OpenTK.Vector4(1.0f, 1.0f, 1.0f, 0.0f));
-
+            
             GL.ColorMaterial(MaterialFace.FrontAndBack, ColorMaterialParameter.Diffuse); //enable material
             GL.Enable(EnableCap.ColorMaterial);
 
             GL.LightModel(LightModelParameter.LightModelTwoSide, 1); //set lighting model 
             GL.LightModel(LightModelParameter.LightModelLocalViewer, 1);
+
+            
+
 
 
             // Any new people standing in front of the kinect?
@@ -109,11 +115,25 @@ namespace workshop17
             // Remove or take a snapshot of any person currently in front of the kinect
             removeOrSnap();
 
+            List<Memory> memToRemove = new List<Memory>();
             // Render each memory
             foreach (Memory mem in memories)
             {
-                mem.render();
+                if(mem.getNumberOfFrames() < 20)
+                {
+                    memToRemove.Add(mem);
+                } else
+                {
+                    mem.render();
+                }
+                 
             }
+            foreach (Memory removeMe in memToRemove)
+            {
+                memories.Remove(removeMe);
+            }
+
+            
 
             Console.WriteLine(" ");
             Console.WriteLine(persons.Count + " persons");
@@ -121,6 +141,7 @@ namespace workshop17
             Console.WriteLine("----");
             allJoints.Clear();
             //allPoints.Clear();
+            b.onframeUpdate();
 
         } 
 
@@ -162,7 +183,7 @@ namespace workshop17
             List<Vector3d> jointPoints;
             KinectPoint kp;
             double dist;
-            int step = 3;
+            int step = 6;
 
             if (allJoints != null && allJoints.Count > 0) // error checking 
             {
@@ -192,7 +213,7 @@ namespace workshop17
                                 foreach(Vector3d jointPoint in jointPoints) // check to see if current kinect point belongs to any joint
                                 {
                                     dist = Math.Abs(Vector3d.Subtract(kp.p, jointPoint).Length);
-                                    if (dist <= .25) // if the point is within the threshold, add it
+                                    if (dist <= .275) // if the point is within the threshold, add it
                                     {
                                         allKPoints[id].Add(kp);
                                     }
@@ -292,6 +313,10 @@ namespace workshop17
             {
                 persons.Remove(p);
                 Console.WriteLine("removed " + p.getID());
+            }
+            if(toRemove.Count > 0)
+            {
+                drop.controls.play();
             }
             toRemove.Clear();
         }
